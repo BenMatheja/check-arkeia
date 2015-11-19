@@ -28,8 +28,8 @@ JOBS_PATH=/opt/arkeia/server/report/jobs
 
 #####################
 #Find all .lst files in $JOBS_PATH which are newer than 1 month ago
-FILES=`find $JOBS_PATH -name "*.lst" -maxdepth 1 -type f -newermt "20151101" -printf '%T@\t%f\t%Tb %Td %TH:%TM\n'| sort -k1n | cut -f 2- | awk '{print $1}'
-
+FILES=`find $JOBS_PATH -name "*.lst" -type f -newermt "20151101" -printf '%T@\t%f\t%Tb %Td %TH:%TM\n'| sort -k1n | cut -f 2- | awk '{print $1}'`
+cd $JOBS_PATH
 set -- junk $FILES
 shift
 for file; do
