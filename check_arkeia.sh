@@ -29,7 +29,7 @@ JOBS_PATH=/opt/arkeia/server/report/jobs
 EPOCH_3W=1814400
 NOW=$(date +%s)
 DELTA_3W=`expr $NOW - $EPOCH_3W`
-COMPARE=$(date -d @$DELTA_3W)
+COMPARE=$(date -d @$DELTA_3W +%Y%m%d)
 echo $COMPARE
 #####################
 #Find all .lst files in $JOBS_PATH which are newer than 1 month ago
