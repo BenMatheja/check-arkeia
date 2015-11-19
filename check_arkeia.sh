@@ -1,6 +1,7 @@
 #!/bin/bash
 #
 # v0.1 (C) 2012 Andrey A. Porodko (Andrey.Porodko@gmail.com)
+# v0.2 (C) 2015 Ben Matheja (ben.matheja@zweitag.de)
 #
 #  Check and report Arkeia backup results 
 #
@@ -24,10 +25,10 @@ WARN_CODE=W0*
 #
 # Arkeia job status files mask
 JOBS_PATH=/opt/arkeia/server/report/jobs
-JOBS_LIST=$JOBS_PATH/bkp*.lst
 
-######################
-FILES=`ls -1t $JOBS_LIST`
+#####################
+#Find all .lst files in $JOBS_PATH which are newer than 1 month ago
+FILES=`find $JOBS_PATH -name "*.lst" -maxdepth 1 -type f -newermt "20151101" -printf '%T@\t%f\t%Tb %Td %TH:%TM\n'| sort -k1n | cut -f 2- | awk '{print $1}'
 
 set -- junk $FILES
 shift
@@ -91,10 +92,9 @@ done < $LOG_FILE
 if [ $excode -eq $NAGIOS_UNKNOWN ]; then
     exmsg="The status of backup $SAVEPACK is unknown."
 elif [ $excode -eq $NAGIOS_OK ]; then
-    exmsg="Backup $SAVEPACK completed. Status is OK."
+    exmsg="Backup $SAVEPACK completed. Status is OK. Backups found which are newer than 1 month"
 fi
 
 echo $exmsg
-
 exit $excode
 
