@@ -24,16 +24,15 @@ INFO_CODE=I0*
 WARN_CODE=W0*
 #
 # Arkeia job status files mask
+#JOBS-PATH=/vagrant/jobs
 JOBS_PATH=/opt/arkeia/server/report/jobs
-# Calculate Datetime of 3 weeks Ago
-EPOCH_3W=1814400
+# Calculate Datetime of 1 Month Ago
+EPOCH_1M=2629743
 NOW=$(date +%s)
-DELTA_3W=`expr $NOW - $EPOCH_3W`
-COMPARE=$(date -d @$DELTA_3W +%Y%m%d)
-echo $COMPARE
+DELTA_1M=`expr $NOW - $EPOCH_1M`
+COMPARE=$(date -d @$DELTA_1M +%Y%m%d)
 #####################
 #Find all .lst files in $JOBS_PATH which are newer than 1 month ago
-#TODO: calculate Datetime from 
 FILES=`find $JOBS_PATH -name "*.lst" -type f -newermt $COMPARE -printf '%T@\t%f\t%Tb %Td %TH:%TM\n'| sort -k1n | cut -f 2- | awk '{print $1}'`
 cd $JOBS_PATH
 set -- junk $FILES
